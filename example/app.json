@@ -1,0 +1,22 @@
+{
+  "name": "rn-mirror-lists-example",
+  "displayName": "RnMirrorLists Example",
+  "expo": {
+    "name": "rn-mirror-lists-example",
+    "slug": "rn-mirror-lists-example",
+    "description": "Example app for rn-mirror-lists",
+    "privacy": "public",
+    "version": "1.0.0",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
