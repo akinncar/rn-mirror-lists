@@ -1,16 +1,22 @@
 import * as React from 'react';
 
-import { View, Text, FlatList, Image, SafeAreaView, Dimensions } from 'react-native';
+import { View, Text, Image, SafeAreaView, Dimensions, ScrollView } from 'react-native';
 import RnMirrorLists from 'rn-mirror-lists';
 
 const AVATAR_SIZE = 64
+const AVATAR_MARGIN_HORIZONTAL_SIZE = 12
 const AVATAR_PADDING_VERTICAL_SIZE = 8
 const AVATAR_SEPARATOR_SIZE = 24
 
 function Avatar({ item }) {
   return <Image 
     source={{ uri: item.image }}
-    style={{ width: AVATAR_SIZE, height: AVATAR_SIZE, borderRadius: 32, paddingVertical: AVATAR_PADDING_VERTICAL_SIZE }}
+    style={{ 
+      width: AVATAR_SIZE, 
+      height: AVATAR_SIZE, borderRadius: 32, 
+      marginHorizontal: AVATAR_MARGIN_HORIZONTAL_SIZE,
+      paddingVertical: AVATAR_PADDING_VERTICAL_SIZE,
+    }}
   />
 }
 
@@ -29,37 +35,36 @@ function Information({ item, height }) {
   </View>
 }
 
-function usePrevious(value) {
-  const ref = React.useRef();
-  React.useEffect(() => {
-    ref.current = value;
-  });
-  return ref.current;
-}
-
 export default function App() {
-  const horizontalFlatListRef = React.useRef(null)
-  const verticalFlatListRef = React.useRef(null)
+  const horizontalListRef = React.useRef(null)
+  const verticalListRef = React.useRef(null)
 
   const [characters, setCharacters] = React.useState([])
   const [verticalListHeight, setVerticalListHeight] = React.useState(0)
 
-  function onMomentumScrollEndHorizontal({ nativeEvent }) {
-    const index = Math.round(nativeEvent.contentOffset.x / (AVATAR_SIZE + AVATAR_SEPARATOR_SIZE));
+  const [horizontalScrollActive, setHorizontalScrollActive] = React.useState(false)
+  const [verticalScrollActive, setVerticalScrollActive] = React.useState(false)
 
-    verticalFlatListRef.current.scrollToIndex({ 
-      animated: true, 
-      index: index,
+
+  function onScrollHorizontal({ nativeEvent }) {
+    if (verticalScrollActive) return
+
+    const offset = (nativeEvent.contentOffset.x / (AVATAR_SIZE + AVATAR_MARGIN_HORIZONTAL_SIZE * 2)) * verticalListHeight;
+
+    verticalListRef.current.scrollTo({ 
+      animated: false, 
+      y: offset,
     })
   }
 
-  function onMomentumScrollEndVertical({ nativeEvent }) {
-    const index = Math.round(nativeEvent.contentOffset.y / verticalListHeight);
+  function onScrollVertical({ nativeEvent }) {
+    if (horizontalScrollActive) return
 
-    horizontalFlatListRef.current.scrollToIndex({ 
-      animated: true, 
-      index: index,
-      viewOffset: Dimensions.get('window').width * 0.5 - (AVATAR_SIZE / 2)
+    const offset = ((nativeEvent.contentOffset.y / verticalListHeight) * (AVATAR_SIZE + AVATAR_MARGIN_HORIZONTAL_SIZE * 2));
+
+    horizontalListRef.current.scrollTo({ 
+      animated: false, 
+      x: offset,
     })
   }
   
@@ -79,37 +84,38 @@ export default function App() {
       alignItems: 'center',
       justifyContent: 'center',
     }}>
-      <FlatList
-        ref={horizontalFlatListRef}
+      <ScrollView
+        ref={horizontalListRef}
         style={{ minHeight: AVATAR_SIZE + AVATAR_PADDING_VERTICAL_SIZE }}
-        onMomentumScrollEnd={onMomentumScrollEndHorizontal}
         horizontal
-        data={characters}
         showsHorizontalScrollIndicator={false}
+        onScroll={onScrollHorizontal}
+        onScrollBeginDrag={() => setHorizontalScrollActive(true)}
+        onMomentumScrollEnd={() => setHorizontalScrollActive(false)}
+        scrollEventThrottle={1}
         decelerationRate={"fast"}
         snapToInterval={AVATAR_SIZE + AVATAR_SEPARATOR_SIZE}
-        ListHeaderComponent={
-          <View style={{ width: Dimensions.get('window').width * 0.5 - (AVATAR_SIZE / 2) }} /> 
-          // half windows size - half avatar size
-        }
-        ListFooterComponent={
-          <View style={{ width: Dimensions.get('window').width * 0.5 - (AVATAR_SIZE / 2) }} />
-          // half windows size - half avatar size
-        }
-        ItemSeparatorComponent={() => <View style={{ width: AVATAR_SEPARATOR_SIZE }} />}
-        renderItem={({ item }) => <Avatar item={item} />}
-        keyExtractor={item => item.id.toString()}
-      />
-      <FlatList
-        ref={verticalFlatListRef}
+      >
+         <View style={{ width: Dimensions.get('window').width * 0.5 - (AVATAR_SIZE / 2) - AVATAR_MARGIN_HORIZONTAL_SIZE }} /> 
+          {characters.map(item => {
+            return <Avatar item={item} key={item.id.toString()} />
+          })}
+         <View style={{ width: Dimensions.get('window').width * 0.5 - (AVATAR_SIZE / 2) - AVATAR_MARGIN_HORIZONTAL_SIZE }} />
+      </ScrollView>
+      <ScrollView
+        ref={verticalListRef}
         onLayout={({ nativeEvent }) => setVerticalListHeight(nativeEvent.layout.height)}
-        onMomentumScrollEnd={onMomentumScrollEndVertical} 
-        data={characters}
+        onScroll={onScrollVertical}
+        onScrollBeginDrag={() => setVerticalScrollActive(true)}
+        onMomentumScrollEnd={() => setVerticalScrollActive(false)} 
+        scrollEventThrottle={1}
         snapToInterval={verticalListHeight}
         decelerationRate={"fast"}
-        renderItem={({ item }) => <Information item={item} height={verticalListHeight}/>}
-        keyExtractor={item => item.id.toString()}
-      />
+      >
+        {characters.map(item => {
+          return <Information item={item} height={verticalListHeight} key={item.id.toString()} />
+        })}  
+      </ScrollView>
     </SafeAreaView>
   );
 }
