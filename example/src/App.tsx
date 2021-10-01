@@ -3,29 +3,22 @@ import * as React from 'react';
 import { View, Text, Image, SafeAreaView, Dimensions, ScrollView } from 'react-native';
 import RnMirrorLists from 'rn-mirror-lists';
 
-const AVATAR_SIZE = 64
-const AVATAR_MARGIN_HORIZONTAL_SIZE = 12
-const AVATAR_PADDING_VERTICAL_SIZE = 8
-const AVATAR_SEPARATOR_SIZE = 24
-
 function Avatar({ item }) {
-  return <View style={{ backgroundColor: 'red' }}>
-    <Image 
-      source={{ uri: item.image }}
-      style={{ 
-        width: AVATAR_SIZE, 
-        height: AVATAR_SIZE, borderRadius: 32, 
-        marginHorizontal: AVATAR_MARGIN_HORIZONTAL_SIZE,
-        marginVertical: AVATAR_PADDING_VERTICAL_SIZE,
-      }}
-    />
-  </View>
+  return <Image 
+    source={{ uri: item.image }}
+    style={{ 
+      width: 64, 
+      height: 64, 
+      marginHorizontal: 12,
+      marginVertical: 8,
+      borderRadius: 32, 
+    }}
+  />
 }
 
-function Information({ item, height }) {
+function Information({ item }) {
   return <View style={{
       flex: 1, 
-      height: height,
       justifyContent: 'center',
       alignItems: 'center',
     }}>
@@ -55,7 +48,7 @@ export default function App() {
   function onScrollHorizontal({ nativeEvent }) {
     if (verticalScrollActive) return
 
-    const offset = (nativeEvent.contentOffset.x / (AVATAR_SIZE + AVATAR_MARGIN_HORIZONTAL_SIZE * 2)) * verticalListHeight;
+    const offset = (nativeEvent.contentOffset.x / horizontalItemWidth) * verticalListHeight;
 
     verticalListRef.current.scrollTo({ 
       animated: false, 
@@ -66,12 +59,19 @@ export default function App() {
   function onScrollVertical({ nativeEvent }) {
     if (horizontalScrollActive) return
 
-    const offset = ((nativeEvent.contentOffset.y / verticalListHeight) * (AVATAR_SIZE + AVATAR_MARGIN_HORIZONTAL_SIZE * 2));
+    const offset = ((nativeEvent.contentOffset.y / verticalListHeight) * horizontalItemWidth);
 
     horizontalListRef.current.scrollTo({ 
       animated: false, 
       x: offset,
     })
+  }
+
+  function onHorizontalItemLayout({ nativeEvent }) {
+    if(!horizontalItemWidth && !horizontalItemHeight) {
+      setHorizontalItemWidth(nativeEvent.layout.width)
+      setHorizontalItemHeight(nativeEvent.layout.height)
+    }
   }
   
   async function getCharacters() {
@@ -100,15 +100,11 @@ export default function App() {
       >
           <View style={{ width: Dimensions.get('window').width * 0.5 - (horizontalItemWidth / 2) }} /> 
             {characters.map(item => {
-              return <View key={item.id.toString()} onLayout={({ nativeEvent }) => {
-                if(!horizontalItemWidth && !horizontalItemHeight) {
-                  console.log(nativeEvent.layout.height)
-                  setHorizontalItemWidth(nativeEvent.layout.width)
-                  setHorizontalItemHeight(nativeEvent.layout.height)
-                }
-              }}>
-                <Avatar item={item} />
-              </View>
+              return (
+                <View key={item.id.toString()} onLayout={onHorizontalItemLayout}>
+                  <Avatar item={item} />
+                </View>
+              )
             })}
           <View style={{ width: Dimensions.get('window').width * 0.5 - (horizontalItemWidth / 2) }} />
       </ScrollView>
@@ -124,7 +120,11 @@ export default function App() {
         decelerationRate={"fast"}
       >
         {characters.map(item => {
-          return <Information item={item} height={verticalListHeight} key={item.id.toString()} />
+          return (
+            <View style={{ height: verticalListHeight }} key={item.id.toString()}>
+              <Information item={item} />
+            </View>
+          )
         })}  
       </ScrollView>
     </SafeAreaView>
