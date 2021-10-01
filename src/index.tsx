@@ -9,7 +9,7 @@ import {
   LayoutChangeEvent,
 } from 'react-native';
 
-interface MirrorListsProps {
+export interface MirrorListsProps {
   data: Array<any>;
   horizontalRenderItem(item: any): JSX.Element;
   verticalRenderItem(item: any): JSX.Element;
