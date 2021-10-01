@@ -9,15 +9,17 @@ const AVATAR_PADDING_VERTICAL_SIZE = 8
 const AVATAR_SEPARATOR_SIZE = 24
 
 function Avatar({ item }) {
-  return <Image 
-    source={{ uri: item.image }}
-    style={{ 
-      width: AVATAR_SIZE, 
-      height: AVATAR_SIZE, borderRadius: 32, 
-      marginHorizontal: AVATAR_MARGIN_HORIZONTAL_SIZE,
-      paddingVertical: AVATAR_PADDING_VERTICAL_SIZE,
-    }}
-  />
+  return <View style={{ backgroundColor: 'red' }}>
+    <Image 
+      source={{ uri: item.image }}
+      style={{ 
+        width: AVATAR_SIZE, 
+        height: AVATAR_SIZE, borderRadius: 32, 
+        marginHorizontal: AVATAR_MARGIN_HORIZONTAL_SIZE,
+        marginVertical: AVATAR_PADDING_VERTICAL_SIZE,
+      }}
+    />
+  </View>
 }
 
 function Information({ item, height }) {
@@ -40,6 +42,10 @@ export default function App() {
   const verticalListRef = React.useRef(null)
 
   const [characters, setCharacters] = React.useState([])
+
+  const [horizontalItemWidth, setHorizontalItemWidth] = React.useState(0)
+  const [horizontalItemHeight, setHorizontalItemHeight] = React.useState(0)
+  
   const [verticalListHeight, setVerticalListHeight] = React.useState(0)
 
   const [horizontalScrollActive, setHorizontalScrollActive] = React.useState(false)
@@ -79,14 +85,10 @@ export default function App() {
   }, [])
 
   return (
-    <SafeAreaView style={{
-      flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center',
-    }}>
+    <SafeAreaView style={{ flex: 1 }}>
       <ScrollView
         ref={horizontalListRef}
-        style={{ minHeight: AVATAR_SIZE + AVATAR_PADDING_VERTICAL_SIZE }}
+        style={{ flexGrow: 0.05 }}
         horizontal
         showsHorizontalScrollIndicator={false}
         onScroll={onScrollHorizontal}
@@ -94,16 +96,25 @@ export default function App() {
         onMomentumScrollEnd={() => setHorizontalScrollActive(false)}
         scrollEventThrottle={1}
         decelerationRate={"fast"}
-        snapToInterval={AVATAR_SIZE + AVATAR_SEPARATOR_SIZE}
+        snapToInterval={horizontalItemWidth}
       >
-         <View style={{ width: Dimensions.get('window').width * 0.5 - (AVATAR_SIZE / 2) - AVATAR_MARGIN_HORIZONTAL_SIZE }} /> 
-          {characters.map(item => {
-            return <Avatar item={item} key={item.id.toString()} />
-          })}
-         <View style={{ width: Dimensions.get('window').width * 0.5 - (AVATAR_SIZE / 2) - AVATAR_MARGIN_HORIZONTAL_SIZE }} />
+          <View style={{ width: Dimensions.get('window').width * 0.5 - (horizontalItemWidth / 2) }} /> 
+            {characters.map(item => {
+              return <View key={item.id.toString()} onLayout={({ nativeEvent }) => {
+                if(!horizontalItemWidth && !horizontalItemHeight) {
+                  console.log(nativeEvent.layout.height)
+                  setHorizontalItemWidth(nativeEvent.layout.width)
+                  setHorizontalItemHeight(nativeEvent.layout.height)
+                }
+              }}>
+                <Avatar item={item} />
+              </View>
+            })}
+          <View style={{ width: Dimensions.get('window').width * 0.5 - (horizontalItemWidth / 2) }} />
       </ScrollView>
       <ScrollView
         ref={verticalListRef}
+        style={{ flex: 0.95 }}
         onLayout={({ nativeEvent }) => setVerticalListHeight(nativeEvent.layout.height)}
         onScroll={onScrollVertical}
         onScrollBeginDrag={() => setVerticalScrollActive(true)}
