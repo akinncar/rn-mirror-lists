@@ -3,6 +3,8 @@ import * as React from 'react';
 import { View, Text, Image, SafeAreaView, Dimensions, ScrollView } from 'react-native';
 import RnMirrorLists from 'rn-mirror-lists';
 
+import useSWR from 'swr'
+
 function Avatar({ item }) {
   return <Image 
     source={{ uri: item.image }}
@@ -17,11 +19,7 @@ function Avatar({ item }) {
 }
 
 function Information({ item }) {
-  return <View style={{
-      flex: 1, 
-      justifyContent: 'center',
-      alignItems: 'center',
-    }}>
+  return <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
     <Image 
       source={{ uri: item.image }}
       style={{ width: 64, height: 64, borderRadius: 32 }}
@@ -34,8 +32,6 @@ export default function App() {
   const horizontalListRef = React.useRef(null)
   const verticalListRef = React.useRef(null)
 
-  const [characters, setCharacters] = React.useState([])
-
   const [horizontalItemWidth, setHorizontalItemWidth] = React.useState(0)
   const [horizontalItemHeight, setHorizontalItemHeight] = React.useState(0)
   
@@ -43,7 +39,6 @@ export default function App() {
 
   const [horizontalScrollActive, setHorizontalScrollActive] = React.useState(false)
   const [verticalScrollActive, setVerticalScrollActive] = React.useState(false)
-
 
   function onScrollHorizontal({ nativeEvent }) {
     if (verticalScrollActive) return
@@ -73,16 +68,13 @@ export default function App() {
       setHorizontalItemHeight(nativeEvent.layout.height)
     }
   }
-  
-  async function getCharacters() {
-    const response = await fetch('https://rickandmortyapi.com/api/character')
-    const data = await response.json()
-    setCharacters(data.results)
-  }
 
-  React.useEffect(() => {
-    getCharacters()
-  }, [])
+  const fetcher = (url: string) => fetch(url).then(res => res.json())
+
+  const { data, error } = useSWR('https://rickandmortyapi.com/api/character', fetcher)
+
+  if (error) return <Text>Failed to load</Text>
+  if (!data) return <Text>loading...</Text>
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -99,7 +91,7 @@ export default function App() {
         snapToInterval={horizontalItemWidth}
       >
           <View style={{ width: Dimensions.get('window').width * 0.5 - (horizontalItemWidth / 2) }} /> 
-            {characters.map(item => {
+            {data.results.map(item => {
               return (
                 <View key={item.id.toString()} onLayout={onHorizontalItemLayout}>
                   <Avatar item={item} />
@@ -119,7 +111,7 @@ export default function App() {
         snapToInterval={verticalListHeight}
         decelerationRate={"fast"}
       >
-        {characters.map(item => {
+        {data.results.map(item => {
           return (
             <View style={{ height: verticalListHeight }} key={item.id.toString()}>
               <Information item={item} />
