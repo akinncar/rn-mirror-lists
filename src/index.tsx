@@ -9,11 +9,11 @@ import {
   LayoutChangeEvent,
 } from 'react-native';
 
-interface ItemProps<Type extends any> {
+interface ItemProps<Type> {
   item: Type;
 }
 
-export interface MirrorListsProps<Type extends any> {
+export interface MirrorListsProps<Type> {
   data: Array<Type>;
   horizontalRenderItem(item: ItemProps<Type>): JSX.Element;
   verticalRenderItem(item: ItemProps<Type>): JSX.Element;
