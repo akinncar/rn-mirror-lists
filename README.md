@@ -2,6 +2,12 @@
 
 Mirror scroll lists for React Native
 
+<center>
+  <img src="assets/example1.gif" width="250"/>
+  <img src="assets/example2.gif" width="250"/>
+  <img src="assets/example3.gif" width="250"/>
+</center>
+
 ## Installation
 
 ```sh
@@ -35,6 +41,14 @@ import { MirrorLists } from 'rn-mirror-lists';
   )}
   reverse={false} // optional
 />
+```
+
+## Example App
+
+You can run the exmaple app on `/example` folder.
+
+```sh
+cd example && yarn start
 ```
 
 ## Contributing
