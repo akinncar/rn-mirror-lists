@@ -2,11 +2,11 @@
 
 Mirror scroll lists for React Native
 
-<center>
-  <img src="assets/example1.gif" width="250"/>
-  <img src="assets/example2.gif" width="250"/>
-  <img src="assets/example3.gif" width="250"/>
-</center>
+<p align="center">
+  <img src="assets/example1.gif" width="240"/>
+  <img src="assets/example2.gif" width="240"/>
+  <img src="assets/example3.gif" width="240"/>
+</p>
 
 ## Installation
 
@@ -58,3 +58,7 @@ See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the 
 ## License
 
 MIT
+
+## Contact
+
+Akinn Rosa - [Github](https://github.com/akinncar) - **[akinncar@hotmail.com](mailto:akinncar@hotmail.com)**
