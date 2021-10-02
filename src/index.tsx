@@ -12,6 +12,7 @@ import {
 interface ItemProps<T extends any> {
   item: T;
 }
+
 export interface MirrorListsProps<T extends any> {
   data: Array<T>;
   horizontalRenderItem(item: ItemProps<T>): JSX.Element;
