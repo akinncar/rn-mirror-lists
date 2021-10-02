@@ -9,21 +9,24 @@ import {
   LayoutChangeEvent,
 } from 'react-native';
 
-export interface MirrorListsProps {
-  data: Array<any>;
-  horizontalRenderItem(item: any): JSX.Element;
-  verticalRenderItem(item: any): JSX.Element;
-  keyExtractor(item: any): React.Key;
+interface ItemProps<T extends any> {
+  item: T;
+}
+export interface MirrorListsProps<T extends any> {
+  data: Array<T>;
+  horizontalRenderItem(item: ItemProps<T>): JSX.Element;
+  verticalRenderItem(item: ItemProps<T>): JSX.Element;
+  keyExtractor(item: ItemProps<T>): React.Key;
   reverse?: boolean;
 }
 
-export function MirrorLists({
+export function MirrorLists<T>({
   data,
   horizontalRenderItem,
   verticalRenderItem,
   keyExtractor,
   reverse = false,
-}: MirrorListsProps) {
+}: MirrorListsProps<T>) {
   const horizontalListRef = React.useRef<ScrollView>(null);
   const verticalListRef = React.useRef<ScrollView>(null);
 
