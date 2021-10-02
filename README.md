@@ -5,7 +5,7 @@ Mirror scroll lists for React Native
 ## Installation
 
 ```sh
-yarn add rn-mirror-lists'
+yarn add rn-mirror-lists
 ```
 
 ## Usage
@@ -17,12 +17,21 @@ import { MirrorLists } from 'rn-mirror-lists';
 
 <MirrorLists
   data={data.results}
-  keyExtractor={({ item }: { item: Character }) => item.id.toString()}
-  horizontalRenderItem={({ item }: { item: Character }) => (
-    <Avatar item={item} />
+  keyExtractor={({ item }) => item.id.toString()}
+  horizontalRenderItem={({ item }) => (
+    <Image
+      source={{ uri: item.image }}
+      style={{
+        width: 64,
+        height: 64,
+        marginHorizontal: 12,
+        marginVertical: 8,
+        borderRadius: 32,
+      }}
+    />
   )}
-  verticalRenderItem={({ item }: { item: Character }) => (
-    <Information item={item} />
+  verticalRenderItem={({ item }) => (
+    <Text>{item.description}<Text/>
   )}
 />
 ```
