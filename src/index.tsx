@@ -14,6 +14,7 @@ export interface MirrorListsProps {
   horizontalRenderItem(item: any): JSX.Element;
   verticalRenderItem(item: any): JSX.Element;
   keyExtractor(item: any): React.Key;
+  reverse?: boolean;
 }
 
 export function MirrorLists({
@@ -21,6 +22,7 @@ export function MirrorLists({
   horizontalRenderItem,
   verticalRenderItem,
   keyExtractor,
+  reverse = false,
 }: MirrorListsProps) {
   const horizontalListRef = React.useRef<ScrollView>(null);
   const verticalListRef = React.useRef<ScrollView>(null);
@@ -70,7 +72,11 @@ export function MirrorLists({
   }
 
   return (
-    <View style={[{ flex: 1 }]}>
+    <View
+      style={[
+        { flex: 1, flexDirection: reverse ? 'column-reverse' : 'column' },
+      ]}
+    >
       <ScrollView
         ref={horizontalListRef}
         style={{ flexGrow: 0 }}

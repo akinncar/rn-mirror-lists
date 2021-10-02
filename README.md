@@ -33,6 +33,7 @@ import { MirrorLists } from 'rn-mirror-lists';
   verticalRenderItem={({ item }) => (
     <Text>{item.description}</Text>
   )}
+  reverse={false} // optional
 />
 ```
 
