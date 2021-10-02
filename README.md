@@ -1,21 +1,30 @@
 # rn-mirror-lists
 
-Mirror scroll lists tforReact Native
+Mirror scroll lists for React Native
 
 ## Installation
 
 ```sh
-npm install rn-mirror-lists
+yarn add rn-mirror-lists'
 ```
 
 ## Usage
 
 ```js
-import RnMirrorLists from "rn-mirror-lists";
+import { MirrorLists } from 'rn-mirror-lists';
 
 // ...
 
-const result = await RnMirrorLists.multiply(3, 7);
+<MirrorLists
+  data={data.results}
+  keyExtractor={({ item }: { item: Character }) => item.id.toString()}
+  horizontalRenderItem={({ item }: { item: Character }) => (
+    <Avatar item={item} />
+  )}
+  verticalRenderItem={({ item }: { item: Character }) => (
+    <Information item={item} />
+  )}
+/>
 ```
 
 ## Contributing

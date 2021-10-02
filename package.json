@@ -1,7 +1,7 @@
 {
   "name": "rn-mirror-lists",
-  "version": "0.1.0",
-  "description": "Mirror scroll lists tforReact Native",
+  "version": "0.1.1",
+  "description": "Mirror scroll lists for React Native",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
   "types": "lib/typescript/index.d.ts",
