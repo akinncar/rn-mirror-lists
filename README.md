@@ -31,7 +31,7 @@ import { MirrorLists } from 'rn-mirror-lists';
     />
   )}
   verticalRenderItem={({ item }) => (
-    <Text>{item.description}<Text/>
+    <Text>{item.description}</Text>
   )}
 />
 ```

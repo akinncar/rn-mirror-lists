@@ -12,11 +12,15 @@
     "test": "jest"
   },
   "dependencies": {
+    "@react-navigation/native": "^6.0.4",
+    "@react-navigation/native-stack": "^6.2.2",
     "expo": "^42.0.4",
     "expo-splash-screen": "~0.8.1",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-native": "0.63.4",
+    "react-native-safe-area-context": "3.2.0",
+    "react-native-screens": "~3.4.0",
     "react-native-unimodules": "~0.12.0",
     "react-native-web": "~0.14.9",
     "swr": "^1.0.1"

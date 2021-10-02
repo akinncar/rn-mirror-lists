@@ -70,10 +70,10 @@ export function MirrorLists({
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={[{ flex: 1 }]}>
       <ScrollView
         ref={horizontalListRef}
-        style={{ flexGrow: 0.05 }}
+        style={{ flexGrow: 0 }}
         horizontal
         showsHorizontalScrollIndicator={false}
         onScroll={onScrollHorizontal}
@@ -108,7 +108,7 @@ export function MirrorLists({
       </ScrollView>
       <ScrollView
         ref={verticalListRef}
-        style={{ flex: 0.95 }}
+        style={{ flex: 1 }}
         onLayout={({ nativeEvent }: LayoutChangeEvent) =>
           setVerticalListHeight(nativeEvent.layout.height)
         }
