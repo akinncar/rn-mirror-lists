@@ -29,6 +29,8 @@ const data = [
   },
 ];
 
+// ...
+
 <MirrorLists
   data={data}
   keyExtractor={({ item }) => item.id.toString()}
