@@ -1,0 +1,95 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<MirrorLists /> should renders correctly 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "flex": 1,
+        "flexDirection": "column",
+      },
+    ]
+  }
+>
+  <RCTScrollView
+    decelerationRate="fast"
+    horizontal={true}
+    onMomentumScrollEnd={[Function]}
+    onScroll={[Function]}
+    onScrollBeginDrag={[Function]}
+    scrollEventThrottle={1}
+    showsHorizontalScrollIndicator={false}
+    snapToInterval={0}
+    style={
+      Object {
+        "flexGrow": 0,
+      }
+    }
+  >
+    <View>
+      <View
+        style={
+          Object {
+            "width": 375,
+          }
+        }
+      />
+      <View
+        onLayout={[Function]}
+      >
+        <Image
+          source={
+            Object {
+              "uri": "https://avatars.githubusercontent.com/u/42688281?v=4",
+            }
+          }
+          style={
+            Object {
+              "borderRadius": 32,
+              "height": 64,
+              "marginHorizontal": 12,
+              "marginVertical": 8,
+              "width": 64,
+            }
+          }
+        />
+      </View>
+      <View
+        style={
+          Object {
+            "width": 375,
+          }
+        }
+      />
+    </View>
+  </RCTScrollView>
+  <RCTScrollView
+    decelerationRate="fast"
+    onLayout={[Function]}
+    onMomentumScrollEnd={[Function]}
+    onScroll={[Function]}
+    onScrollBeginDrag={[Function]}
+    scrollEventThrottle={1}
+    snapToInterval={0}
+    style={
+      Object {
+        "flex": 1,
+      }
+    }
+  >
+    <View>
+      <View
+        style={
+          Object {
+            "height": 0,
+          }
+        }
+      >
+        <Text>
+          This guy is really amazing
+        </Text>
+      </View>
+    </View>
+  </RCTScrollView>
+</View>
+`;
