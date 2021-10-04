@@ -21,8 +21,16 @@ import { MirrorLists } from 'rn-mirror-lists';
 
 // ...
 
+const data = [
+  {
+    id: 1,
+    image: 'https://avatars.githubusercontent.com/u/42688281?v=4',
+    description: 'This guy is really amazing',
+  },
+];
+
 <MirrorLists
-  data={data.results}
+  data={data}
   keyExtractor={({ item }) => item.id.toString()}
   horizontalRenderItem={({ item }) => (
     <Image

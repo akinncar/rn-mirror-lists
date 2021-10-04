@@ -8,7 +8,7 @@ describe('<MirrorLists />', () => {
   test('should renders correctly', () => {
     const mockedData = [
       {
-        id: Math.random(),
+        id: 1,
         image: 'https://avatars.githubusercontent.com/u/42688281?v=4',
         description: 'This guy is really amazing',
       },
